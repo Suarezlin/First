@@ -77,7 +77,7 @@ class DEAN:
         pattern=re.compile('学号.*?"span_unedit">(.*?)</span>.*?姓名.*?"span_unedit">(.*?)</span>.*?性别.*?"span_unedit">(.*?)</span>.*?出生日期.*?"span_unedit">(.*?)</span>.*?民族.*?"span_unedit">(.*?)</span>.*?班级名称.*?"span_unedit">(.*?)</span>.*?学院.*?"span_unedit">(.*?)</span>',re.S)
         item=re.findall(pattern,text)
         item=item[0]
-        x = prettytable.PrettyTable(["学号","2150400330"])
+        x = prettytable.PrettyTable(["学号",item[0]])
         x.align["学号"] = "l"
         x.padding_width = 1
         x.add_row(["姓名",item[1]])
