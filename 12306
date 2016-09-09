@@ -1,0 +1,95 @@
+__author__ = 'Suarezlin'
+import requests
+import prettytable
+import re
+from bs4 import BeautifulSoup
+import json
+class Ticket:
+    def __init__(self):
+        self.url='https://kyfw.12306.cn/otn/leftTicket/queryT?leftTicketDTO.train_date=2016-09-30&leftTicketDTO.from_station=XAY&leftTicketDTO.to_station=SHH&purpose_codes=ADULT'
+        self.station_url='https://kyfw.12306.cn/otn/resources/js/framework/station_name.js?station_version=1.8965'
+        self.session=requests.session()
+    def getStationCode(self):
+        s=self.session.get(self.station_url,verify=False)
+        text=s.text
+        pattern=re.compile('([\u0391-\uFFE5]+)\|([A-Z]+)',re.S)
+        result=re.findall(pattern,text)
+        station=dict(result)
+        return station
+    def login(self):
+        s=self.session.get(self.url,verify=False)
+        j=s.json()
+        j=j["data"]
+        t=[]
+        for it in j:
+            ss=it["queryLeftNewDTO"]
+            t.append(ss)
+        s_t=[]
+        a_t=[]
+        lishi=[]
+        f_s=[]
+        t_s=[]
+        train=[]
+        rw=[]
+        yw=[]
+        yz=[]
+        wz=[]
+        swz=[]
+        first=[]
+        second=[]
+        for it in t:
+            s_t.append(it["start_time"])
+            a_t.append(it["arrive_time"])
+            lishi.append(it["lishi"])
+            f_s.append(it["from_station_name"])
+            t_s.append(it["to_station_name"])
+            train.append(it["station_train_code"])
+            rw.append(it["rw_num"])
+            yw.append(it["yw_num"])
+            yz.append(it["yz_num"])
+            wz.append(it["wz_num"])
+            swz.append(it["swz_num"])
+            first.append(it["zy_num"])
+            second.append(it["ze_num"])
+        i=0
+        x = prettytable.PrettyTable(["车次","出发/到达车站","出发/到达时间","历时","商务座","一等座","二等座","软卧","硬卧","硬座","无座"])
+        x.align["车次"] = "c"
+        x.align["始发/到达站"] = "c"
+        x.align["出发/到达时间"] = "c"
+        x.align["历时"] = "c"
+        x.align["商务座"] = "c"
+        x.align["一等座"] = "c"
+        x.align["二等座"] = "c"
+        x.align["软卧"] = "c"
+        x.align["硬卧"] = "c"
+        x.align["硬座"] = "c"
+        x.align["无座"] = "c"
+        x.padding_width = 1
+        #x.add_row(["","到达站","到达时间","","","","","","","",""])
+        length=len(train)
+        for it in range(0,length):
+            x.add_row([train[it],f_s[it],s_t[it],lishi[it],swz[it],first[it],second[it],rw[it],yw[it],yz[it],wz[it]])
+            x.add_row(['',t_s[it],a_t[it],'','','','','','','',''])
+        print(x)
+
+def __main__():
+    ticket=Ticket()
+    station=ticket.getStationCode()
+    while True:
+        print('请输入出发车站:')
+        start=input()
+        start=station[start]
+        print('请输入到达车站:')
+        arrive=input()
+        arrive=station[arrive]
+        print('请输入出发时间(输入示例:2016-01-01)')
+        start_time=input()
+        ticket.url='https://kyfw.12306.cn/otn/leftTicket/queryT?leftTicketDTO.train_date={}&leftTicketDTO.from_station={}&leftTicketDTO.to_station={}&purpose_codes=ADULT'.format(start_time,start,arrive)
+        ticket.login()
+        print('按回车键继续')
+        input()
+
+
+
+if __name__ == "__main__":
+    __main__()
