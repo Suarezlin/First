@@ -76,24 +76,24 @@ class Ticket:
         index=train.index(self.str)
         if second[index].isdigit()==True:
 
-            self.send_email('smtp.163.com','17791652478@163.com','Lzn19971012','1031312670@qq.com','您关注的'+self.str+' 现在有票',self.str+' 票务状态:二等座'+second[index]+'\n'+self.str+':'+f_s[index]+'-'+t_s[index]+'\n\t\t'+s_t[index]+'-'+a_t[index]+'\n历时:'+lishi[index])
+            self.send_email('smtp.163.com','17791652478@163.com','XXXXXXXX','1031312670@qq.com','您关注的'+self.str+' 现在有票',self.str+' 票务状态:二等座'+second[index]+'\n'+self.str+':'+f_s[index]+'-'+t_s[index]+'\n\t\t'+s_t[index]+'-'+a_t[index]+'\n历时:'+lishi[index])
             exit()
         elif second[index]=='有':
-            self.send_email('smtp.163.com','17791652478@163.com','Lzn19971012','1031312670@qq.com','您关注的'+self.str+' 现在有票',self.str+' 票务状态:二等座'+second[index]+'\n'+self.str+':'+f_s[index]+'-'+t_s[index]+'\n\t\t'+s_t[index]+'-'+a_t[index]+'\n历时:'+lishi[index])
+            self.send_email('smtp.163.com','17791652478@163.com','XXXXXXXX','1031312670@qq.com','您关注的'+self.str+' 现在有票',self.str+' 票务状态:二等座'+second[index]+'\n'+self.str+':'+f_s[index]+'-'+t_s[index]+'\n\t\t'+s_t[index]+'-'+a_t[index]+'\n历时:'+lishi[index])
             exit()
         if yw[index].isdigit()==True:
 
-            self.send_email('smtp.163.com','17791652478@163.com','Lzn19971012','1031312670@qq.com','您关注的'+self.str+' 现在有票',self.str+' 票务状态:硬卧'+yw[index]+'\n'+self.str+':'+f_s[index]+'-'+t_s[index]+'\n\t\t'+s_t[index]+'-'+a_t[index]+'\n历时:'+lishi[index])
+            self.send_email('smtp.163.com','17791652478@163.com','XXXXXXXX','1031312670@qq.com','您关注的'+self.str+' 现在有票',self.str+' 票务状态:硬卧'+yw[index]+'\n'+self.str+':'+f_s[index]+'-'+t_s[index]+'\n\t\t'+s_t[index]+'-'+a_t[index]+'\n历时:'+lishi[index])
             exit()
         elif yw[index]=='有':
-            self.send_email('smtp.163.com','17791652478@163.com','Lzn19971012','1031312670@qq.com','您关注的'+self.str+' 现在有票',self.str+' 票务状态:硬卧'+yw[index]+'\n'+self.str+':'+f_s[index]+'-'+t_s[index]+'\n\t\t'+s_t[index]+'-'+a_t[index]+'\n历时:'+lishi[index])
+            self.send_email('smtp.163.com','17791652478@163.com','XXXXXXXX','1031312670@qq.com','您关注的'+self.str+' 现在有票',self.str+' 票务状态:硬卧'+yw[index]+'\n'+self.str+':'+f_s[index]+'-'+t_s[index]+'\n\t\t'+s_t[index]+'-'+a_t[index]+'\n历时:'+lishi[index])
             exit()
         if yz[index].isdigit()==True:
 
-            self.send_email('smtp.163.com','17791652478@163.com','Lzn19971012','1031312670@qq.com','您关注的'+self.str+' 现在有票',self.str+' 票务状态:硬座'+yz[index]+'\n'+self.str+':'+f_s[index]+'-'+t_s[index]+'\n\t\t'+s_t[index]+'-'+a_t[index]+'\n历时:'+lishi[index])
+            self.send_email('smtp.163.com','17791652478@163.com','XXXXXXXX','1031312670@qq.com','您关注的'+self.str+' 现在有票',self.str+' 票务状态:硬座'+yz[index]+'\n'+self.str+':'+f_s[index]+'-'+t_s[index]+'\n\t\t'+s_t[index]+'-'+a_t[index]+'\n历时:'+lishi[index])
             exit()
         elif yz[index]=='有':
-            self.send_email('smtp.163.com','17791652478@163.com','Lzn19971012','1031312670@qq.com','您关注的'+self.str+' 现在有票',self.str+' 票务状态:硬座'+yz[index]+'\n'+self.str+':'+f_s[index]+'-'+t_s[index]+'\n\t\t'+s_t[index]+'-'+a_t[index]+'\n历时:'+lishi[index])
+            self.send_email('smtp.163.com','17791652478@163.com','XXXXXXXX','1031312670@qq.com','您关注的'+self.str+' 现在有票',self.str+' 票务状态:硬座'+yz[index]+'\n'+self.str+':'+f_s[index]+'-'+t_s[index]+'\n\t\t'+s_t[index]+'-'+a_t[index]+'\n历时:'+lishi[index])
             exit()
         i=0
         
