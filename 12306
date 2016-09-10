@@ -2,13 +2,32 @@ __author__ = 'Suarezlin'
 import requests
 import prettytable
 import re
-from bs4 import BeautifulSoup
 import json
+from email import encoders
+from email.header import Header
+from email.mime.text import MIMEText
+from email.utils import parseaddr, formataddr
+import time
+import smtplib
+
 class Ticket:
     def __init__(self):
         self.url='https://kyfw.12306.cn/otn/leftTicket/queryT?leftTicketDTO.train_date=2016-09-30&leftTicketDTO.from_station=XAY&leftTicketDTO.to_station=SHH&purpose_codes=ADULT'
         self.station_url='https://kyfw.12306.cn/otn/resources/js/framework/station_name.js?station_version=1.8965'
         self.session=requests.session()
+    def _format_addr(s):
+        name, addr = parseaddr(s)
+        return formataddr((Header(name, 'utf-8').encode(), addr))
+    def send_email(self,host, from_account, from_passwd, to_account, subject, content):
+        email_client = smtplib.SMTP(host)
+        email_client.login(from_account, from_passwd)
+        # create msg
+        msg = MIMEText(content, 'plain', 'utf-8')
+        msg['Subject'] = Header(subject, 'utf-8')  # subject
+        msg['From'] = 'Suarezlin<17791652478@163.com>'
+        msg['To'] = to_account
+        email_client.sendmail(from_account, to_account, msg.as_string())
+        email_client.quit()
     def getStationCode(self):
         s=self.session.get(self.station_url,verify=False)
         text=s.text
@@ -18,6 +37,8 @@ class Ticket:
         return station
     def login(self):
         s=self.session.get(self.url,verify=False)
+        while s.status_code==403:
+            s=self.session.get(self.url,verify=False)
         j=s.json()
         j=j["data"]
         t=[]
@@ -51,7 +72,31 @@ class Ticket:
             swz.append(it["swz_num"])
             first.append(it["zy_num"])
             second.append(it["ze_num"])
+
+        index=train.index(self.str)
+        if second[index].isdigit()==True:
+
+            self.send_email('smtp.163.com','17791652478@163.com','Lzn19971012','1031312670@qq.com','您关注的'+self.str+' 现在有票',self.str+' 票务状态:二等座'+second[index]+'\n'+self.str+':'+f_s[index]+'-'+t_s[index]+'\n\t\t'+s_t[index]+'-'+a_t[index]+'\n历时:'+lishi[index])
+            exit()
+        elif second[index]=='有':
+            self.send_email('smtp.163.com','17791652478@163.com','Lzn19971012','1031312670@qq.com','您关注的'+self.str+' 现在有票',self.str+' 票务状态:二等座'+second[index]+'\n'+self.str+':'+f_s[index]+'-'+t_s[index]+'\n\t\t'+s_t[index]+'-'+a_t[index]+'\n历时:'+lishi[index])
+            exit()
+        if yw[index].isdigit()==True:
+
+            self.send_email('smtp.163.com','17791652478@163.com','Lzn19971012','1031312670@qq.com','您关注的'+self.str+' 现在有票',self.str+' 票务状态:硬卧'+yw[index]+'\n'+self.str+':'+f_s[index]+'-'+t_s[index]+'\n\t\t'+s_t[index]+'-'+a_t[index]+'\n历时:'+lishi[index])
+            exit()
+        elif yw[index]=='有':
+            self.send_email('smtp.163.com','17791652478@163.com','Lzn19971012','1031312670@qq.com','您关注的'+self.str+' 现在有票',self.str+' 票务状态:硬卧'+yw[index]+'\n'+self.str+':'+f_s[index]+'-'+t_s[index]+'\n\t\t'+s_t[index]+'-'+a_t[index]+'\n历时:'+lishi[index])
+            exit()
+        if yz[index].isdigit()==True:
+
+            self.send_email('smtp.163.com','17791652478@163.com','Lzn19971012','1031312670@qq.com','您关注的'+self.str+' 现在有票',self.str+' 票务状态:硬座'+yz[index]+'\n'+self.str+':'+f_s[index]+'-'+t_s[index]+'\n\t\t'+s_t[index]+'-'+a_t[index]+'\n历时:'+lishi[index])
+            exit()
+        elif yz[index]=='有':
+            self.send_email('smtp.163.com','17791652478@163.com','Lzn19971012','1031312670@qq.com','您关注的'+self.str+' 现在有票',self.str+' 票务状态:硬座'+yz[index]+'\n'+self.str+':'+f_s[index]+'-'+t_s[index]+'\n\t\t'+s_t[index]+'-'+a_t[index]+'\n历时:'+lishi[index])
+            exit()
         i=0
+        
         x = prettytable.PrettyTable(["车次","出发/到达车站","出发/到达时间","历时","商务座","一等座","二等座","软卧","硬卧","硬座","无座"])
         x.align["车次"] = "c"
         x.align["始发/到达站"] = "c"
@@ -75,19 +120,22 @@ class Ticket:
 def __main__():
     ticket=Ticket()
     station=ticket.getStationCode()
+    print('请输入出发车站:')
+    start=input()
+    start=station[start]
+    print('请输入到达车站:')
+    arrive=input()
+    arrive=station[arrive]
+    print('请输入出发时间(输入示例:2016-01-01)')
+    start_time=input()
+    print('请输入提醒车次:')
+    ticket.str=input()
     while True:
-        print('请输入出发车站:')
-        start=input()
-        start=station[start]
-        print('请输入到达车站:')
-        arrive=input()
-        arrive=station[arrive]
-        print('请输入出发时间(输入示例:2016-01-01)')
-        start_time=input()
         ticket.url='https://kyfw.12306.cn/otn/leftTicket/queryT?leftTicketDTO.train_date={}&leftTicketDTO.from_station={}&leftTicketDTO.to_station={}&purpose_codes=ADULT'.format(start_time,start,arrive)
         ticket.login()
-        print('按回车键继续')
-        input()
+        #print('按回车键继续')
+        #input()
+        time.sleep(30)
 
 
 
